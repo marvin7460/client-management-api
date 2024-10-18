@@ -45,3 +45,30 @@ exports.deletePayment = async (req, res) => {
   await clientService.deletePayment(Number(paymentId));
   res.status(204).send();
 };
+
+
+let events = []; // Usar un array en memoria para almacenar eventos, o usa tu base de datos
+
+export const getEvents = (req, res) => {
+  res.json(events);
+};
+
+export const addEvent = (req, res) => {
+  const { clientId, clientName, type, amount, date } = req.body;
+  const newEvent = {
+    id: events.length + 1, // Generar ID único
+    clientId,
+    clientName,
+    type,
+    amount,
+    date,
+  };
+  events.push(newEvent);
+  res.status(201).json(newEvent);
+};
+
+export const deleteEvent = (req, res) => {
+  const { eventId } = req.params;
+  events = events.filter(event => event.id !== parseInt(eventId, 10));
+  res.status(204).send();
+};
